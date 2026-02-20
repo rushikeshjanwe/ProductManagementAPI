@@ -1,0 +1,86 @@
+# ============================================================
+# SPRING BOOT DEBUG TUTORIAL - APPLICATION CONFIGURATION
+# ============================================================
+# This configuration is set up to help you learn debugging.
+# Pay attention to the logging levels - they're key for debugging!
+
+spring:
+  application:
+    name: debug-demo
+  
+  # H2 Database Configuration
+  datasource:
+    url: jdbc:h2:mem:debugdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: 
+  
+  # Enable H2 Console for database inspection
+  # Access at: http://localhost:8080/h2-console
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  
+  # JPA Configuration
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true                    # DEBUGGING TIP: Shows all SQL queries!
+    properties:
+      hibernate:
+        format_sql: true              # Makes SQL readable
+        use_sql_comments: true        # Adds helpful comments
+
+# ============================================================
+# LOGGING CONFIGURATION - CRITICAL FOR DEBUGGING
+# ============================================================
+logging:
+  level:
+    root: INFO
+    # Your application packages - set to DEBUG for detailed logs
+    com.example.debugdemo: DEBUG
+    # Spring framework internals
+    org.springframework.web: DEBUG
+    org.springframework.data: DEBUG
+    # SQL logging
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE  # Shows SQL parameters
+  
+  # Log pattern with timestamps and thread info
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+  
+  # Write logs to file for later analysis
+  file:
+    name: logs/debug-demo.log
+
+# ============================================================
+# ACTUATOR ENDPOINTS - POWERFUL DEBUGGING TOOLS
+# ============================================================
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"    # Expose all actuator endpoints
+  endpoint:
+    health:
+      show-details: always
+    env:
+      show-values: always
+
+# Server configuration
+server:
+  port: 8080
+  error:
+    include-message: always
+    include-binding-errors: always
+    include-stacktrace: always       # Show full stack traces (dev only!)
+    include-exception: true
+
+# Custom application properties
+app:
+  debug:
+    simulate-slow-queries: false     # Toggle to simulate slow database
+    simulate-random-errors: false    # Toggle to simulate random failures
