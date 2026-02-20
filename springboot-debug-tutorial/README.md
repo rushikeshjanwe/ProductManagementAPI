@@ -16,6 +16,9 @@ cd springboot-debug-tutorial
 java -jar target/debug-demo-1.0.0.jar
 ```
 
+
+
+
 **Access Points:**
 - API: http://localhost:8080/api/products
 - H2 Console: http://localhost:8080/h2-console (JDBC URL: `jdbc:h2:mem:debugdb`)
